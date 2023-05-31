@@ -1,0 +1,128 @@
+﻿<Window x:Class="Transmitter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Transmitter"
+        xmlns:converters="clr-namespace:Transmitter.Converters"
+        mc:Ignorable="d"
+        Title="Transmitter" Height="720" Width="1280">
+    <Window.Resources>
+        <converters:ZeroValueConverter x:Key="ZeroValueConverter"/>
+
+        <Style TargetType="{x:Type TextBox}"
+               x:Key="HintTextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <TextBox x:Name="TextBoxControl" 
+                                     Text="{Binding Path=Text, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+
+                            <TextBlock x:Name="HintTextBlock"
+                                       Text="{TemplateBinding Tag}"
+                                       Visibility="Collapsed"
+                                       VerticalAlignment="Center"
+                                       Background="White"
+                                       Margin="5"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=Text, ElementName=TextBoxControl}" Value="">
+                                <Setter TargetName="HintTextBlock" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="0.1*" MaxHeight="70"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.9*"/>
+                <RowDefinition Height="0.1*" MaxHeight="70"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="0" Grid.Row="0" 
+                         Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="IP address:"
+                           HorizontalAlignment="Center"
+                           FontFamily="Times New Roman" FontSize="45" FontWeight="Bold"/>
+                <TextBox Text="{Binding Hostname}"
+                         Margin="10 0"
+                         Height="50"
+                         FontFamily="Times New Roman" FontSize="35" FontWeight="Light"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="0"
+                        Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="Port:"
+                           HorizontalAlignment="Center"
+                           FontFamily="Times New Roman" FontSize="45" FontWeight="Bold"/>
+                <TextBox Text="{Binding Port, StringFormat={}{0;0;-0}}"
+                         Margin="10 0"
+                         Height="50"
+                         FontFamily="Times New Roman" FontSize="35" FontWeight="Light"/>
+            </StackPanel>
+
+            <Button Grid.Row="1" Grid.Column="0"
+                    Content="LISTEN CONNECTIONS"
+                    Background="AliceBlue"
+                    HorizontalAlignment="Center"
+                    Margin="0 7"
+                    Width="500"
+                    FontSize="30" FontWeight="Light"
+                    Command="{Binding ConnectCommand}"/>
+            <Button Grid.Row="1" Grid.Column="1"
+                    Content="SEND"
+                    Background="AliceBlue"
+                    HorizontalAlignment="Center"
+                    Margin="0 7" 
+                    Width="500"
+                    FontSize="30" FontWeight="Light"
+                    Command="{Binding SendMessageCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     Text="{Binding TimePeriod, StringFormat={}{0;0;-0}}" Tag="Enter time period..."
+                     Margin="10"
+                     FontSize="35" FontWeight="Light"
+                     Style="{StaticResource HintTextBox}"/>
+
+            <TextBox Grid.Column="1"
+                     Text="{Binding Accuracy, StringFormat={}{0;0;-0}}" Tag="Enter accuracy..."
+                     Margin="10"
+                     FontSize="35" FontWeight="Light"
+                     Style="{StaticResource HintTextBox}"/>
+
+            <Button Grid.Column="2"
+                    Content="SET" 
+                    Background="AliceBlue"
+                    HorizontalAlignment="Center"
+                    Margin="10"
+                    Width="300"
+                    FontSize="30" FontWeight="Light"
+                    Command="{Binding SetGeneratorPropsCommand}"/>
+        </Grid>
+    </Grid>
+</Window>

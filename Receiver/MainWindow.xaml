@@ -1,0 +1,35 @@
+﻿<Window x:Class="Receiver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Receiver"
+        mc:Ignorable="d"
+        Title="Receiver" Height="720" Width="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.95*"/>
+        </Grid.RowDefinitions>
+
+        <Frame x:Name="MainWindowFrame" 
+               Grid.Row = "1"
+               Margin="0"
+               NavigationUIVisibility="Hidden"/>
+
+        <Border Grid.Row="0">
+            <StackPanel Orientation="Horizontal"
+                        Background="LightGray">
+                <RadioButton x:Name="InfoButton" Content="INFO"
+                             Style="{StaticResource MenuButtonStyle}"
+                             Command="{Binding MenuSelectionCommand}" CommandParameter="Info"/>
+                <RadioButton x:Name="GraphButton" Content="GRAPH"
+                             Style="{StaticResource MenuButtonStyle}"
+                             Command="{Binding MenuSelectionCommand}" CommandParameter="Graph"/>
+                <RadioButton x:Name="TableButton" Content="TABLE"
+                             Style="{StaticResource MenuButtonStyle}"
+                             Command="{Binding MenuSelectionCommand}" CommandParameter="Table"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Receiver.MVVM.View.GraphView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+             xmlns:local="clr-namespace:Receiver.MVVM.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <oxy:PlotView Model="{Binding ChartModel}"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition Width="0.4*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="Time period:"
+                       FontFamily="Times New Roman" FontSize="35" FontWeight="Medium"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1"
+                     Text="{Binding TimePeriod}"
+                     Margin="10"
+                     FontSize="35" FontWeight="Light"/>
+            <Button Grid.Column="2"
+                    Content="SET" 
+                    Background="AliceBlue"
+                    HorizontalAlignment="Center"
+                    Margin="20 10"
+                    Width="300"
+                    FontSize="30" FontWeight="Light"
+                    Command="{Binding SetTimePeriodCommand}"/>
+        </Grid>
+
+    </Grid>
+</UserControl>
