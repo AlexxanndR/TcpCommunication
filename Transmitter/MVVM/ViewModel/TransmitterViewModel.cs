@@ -98,8 +98,7 @@ namespace Transmitter.MVVM.ViewModel
                 return new RelayCommand(async (obj) =>
                 {
                     try { await _tcpServer.ListenAsync(Hostname, Port); }
-                    catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
-                    
+                    catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); }                
                 });
             }
         }

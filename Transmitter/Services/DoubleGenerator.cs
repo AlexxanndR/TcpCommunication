@@ -18,7 +18,7 @@ namespace Transmitter.Services
             _timePeriod = 0;
             _numberAccuracy = 2;
 
-            _t = new Thread(() => Generate());
+            _t = new Thread(new ThreadStart(Generate));
         }
 
         public void SetProps(int timePeriod, int numberAccuracy)
@@ -27,7 +27,7 @@ namespace Transmitter.Services
             _numberAccuracy = numberAccuracy;
         }
 
-        public void Generate()
+        private void Generate()
         {
             var rand = new Random();
             var rndNumber = new decimal(rand.NextDouble());
