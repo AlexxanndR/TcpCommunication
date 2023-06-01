@@ -6,13 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Windows;
 
 namespace Receiver.MVVM.ViewModel
 {
     class TableViewModel : ObservableObject
     {
-        private const string txtFilePath = @"./files/messages.txt";
-        private const string csvFilePath = @"./files/messages.csv";
+        private readonly string _txtFilePath = @"./files/messages.txt";
+        private readonly string _csvFilePath = @"./files/messages.csv";
 
         private List<Message> _messages;
 
@@ -28,12 +29,23 @@ namespace Receiver.MVVM.ViewModel
 
         public TableViewModel()
         {
+            _txtFilePath = @"./files/messages.txt";
+            _csvFilePath = @"./files/messages.csv";
+
+            _messages = new List<Message>();
+
+            if (!File.Exists(_txtFilePath))
+            {
+                MessageBox.Show("There are no data to analyze yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             ReadMessagesFromFile();
         }
 
         private void ReadMessagesFromFile()
         {
-            string json = File.ReadAllText(txtFilePath);
+            string json = File.ReadAllText(_txtFilePath);
             Messages = JsonSerializer.Deserialize<List<Message>>(json);
         }
 
@@ -41,9 +53,12 @@ namespace Receiver.MVVM.ViewModel
         {
             get
             {
-                return new RelayCommand((pageName) => 
+                return new RelayCommand((obj) => 
                 {
-                    using (StreamWriter writer = new StreamWriter(csvFilePath))
+                    if (!File.Exists(_txtFilePath))
+                        return;
+
+                    using (StreamWriter writer = new StreamWriter(_csvFilePath))
                     {
                         string header = string.Join(",", typeof(Message).GetProperties().Select(p => p.Name));
                         writer.WriteLine(header);

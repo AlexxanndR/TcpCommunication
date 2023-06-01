@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Receiver.MVVM.View"
              xmlns:converters="clr-namespace:Receiver.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesgnWidth="1280">
     <UserControl.Resources>
-        <converters:ZeroValueConverter x:Key="ZeroValueConverter"/>
-
         <Style TargetType="{x:Type TextBox}"
                x:Key="HintTextBox">
             <Setter Property="Template">
@@ -36,7 +35,13 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding ViewUnloadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.9*"/>

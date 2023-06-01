@@ -1,6 +1,7 @@
 ﻿using MVVM;
 using System;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using TCP;
 using Transmitter.MVVM.Model;
@@ -73,6 +74,7 @@ namespace Transmitter.MVVM.ViewModel
             _tcpServer = new TCPServer();
             _doubleGenerator = new DoubleGenerator();
 
+
             _doubleGenerator.StartGeneration();
         }
 
@@ -98,7 +100,7 @@ namespace Transmitter.MVVM.ViewModel
                 return new RelayCommand(async (obj) =>
                 {
                     try { await _tcpServer.ListenAsync(Hostname, Port); }
-                    catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); }                
+                    catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
                 });
             }
         }
@@ -107,7 +109,7 @@ namespace Transmitter.MVVM.ViewModel
         {
             get
             {
-                return new RelayCommand((obj) => _doubleGenerator.SetProps(TimePeriod, Accuracy));
+                return new RelayCommand(async (obj) =>  await _doubleGenerator.SetPropsAsync(TimePeriod, Accuracy));
             }
         }
     }

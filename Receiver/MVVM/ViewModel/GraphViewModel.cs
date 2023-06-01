@@ -18,7 +18,7 @@ namespace Receiver.MVVM.ViewModel
 {
     class GraphViewModel : ObservableObject
     {
-        private const string _filePath = @"./files/messages.txt";
+        private readonly string _filePath;
 
         private List<Message> _messages;
 
@@ -50,6 +50,16 @@ namespace Receiver.MVVM.ViewModel
 
         public GraphViewModel()
         {
+            _filePath = @"./files/messages.txt";
+
+            _messages = new List<Message>();
+
+            if (!File.Exists(_filePath))
+            {
+                MessageBox.Show("There are no data to analyze yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             ReadMessagesFromFile();
             ConfigureChart();
         }
@@ -97,6 +107,9 @@ namespace Receiver.MVVM.ViewModel
             {
                 return new RelayCommand((obj) =>
                 {
+                    if (!File.Exists(_filePath))
+                        return;
+
                     if (!Regex.IsMatch(TimePeriod, @"^\d{2}\:\d{2} - \d{2}\:\d{2}$"))
                     {
                         MessageBox.Show("Incorrect time period format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

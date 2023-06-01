@@ -20,12 +20,9 @@ namespace TCP
         private string _hostname;
         private uint _port;
 
-        private bool _isReading;
         public TCPClient()
         {
             _tcpClient = new TcpClient();
-
-            _isReading = false;
         }
 
         async private Task ReceiveMessageAsync()
@@ -60,16 +57,12 @@ namespace TCP
 
             _networkStream = _tcpClient.GetStream();
 
-            _isReading = true;
-
-            while (_isReading)
+            while (true)
                 await ReceiveMessageAsync();
         }
 
         public void CloseConnection()
         {
-            _isReading = false;
-
             if (_tcpClient.Connected)
                 _tcpClient.Close();
         }

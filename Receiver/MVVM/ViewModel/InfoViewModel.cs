@@ -14,7 +14,7 @@ namespace Receiver.MVVM.ViewModel
 {
     class InfoViewModel : ObservableObject
     {
-        private const string _filePath = @"./files/messages.txt";
+        private readonly string _filePath;
 
         private IP _ip;
 
@@ -78,6 +78,8 @@ namespace Receiver.MVVM.ViewModel
             _tcpClient = new TCPClient();
             _messages = new List<Message>();
 
+            _filePath = @"./files/messages.txt";
+
             _tcpClient.MessageReceived += MessageReceivedHandler;
         }
 
@@ -86,13 +88,16 @@ namespace Receiver.MVVM.ViewModel
             if (_messages.Count == 0)
                 return;
 
+            if (!Directory.Exists(@"./files"))
+                Directory.CreateDirectory(@"./files");
+
             string json = JsonSerializer.Serialize(_messages);
             File.WriteAllText(_filePath, json);
         }
 
         private void MessageReceivedHandler(string message)
         {
-            RandomNumber = Regex.Match(message, @"\d+\,\d+", RegexOptions.Compiled).Value;
+            RandomNumber = Regex.Match(message, @"0|(\d+\,\d+)", RegexOptions.Compiled).Value;
             ReceivedTime = DateTime.Now.ToString("HH:mm");
 
             _messages.Add(new Message 
@@ -100,19 +105,25 @@ namespace Receiver.MVVM.ViewModel
                 Number = Double.Parse(RandomNumber), 
                 Time = ReceivedTime
             });
-
-            WriteMessagesToFile();
         }
 
         public RelayCommand ConnectCommand
         {
             get
             {
-                return new RelayCommand((obj) =>
+                return new RelayCommand(async (obj) =>
                 {
-                    try { _tcpClient.ConnectAsync(Hostname, Port); }
+                    try { await _tcpClient.ConnectAsync(Hostname, Port); }
                     catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); }   
                 });
+            }
+        }
+
+        public RelayCommand ViewUnloadedCommand
+        {
+            get
+            {
+                return new RelayCommand((obj) => WriteMessagesToFile());
             }
         }
 
