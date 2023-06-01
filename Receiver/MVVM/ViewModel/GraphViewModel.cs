@@ -112,7 +112,7 @@ namespace Receiver.MVVM.ViewModel
 
                     if (!Regex.IsMatch(TimePeriod, @"^\d{2}\:\d{2} - \d{2}\:\d{2}$"))
                     {
-                        MessageBox.Show("Incorrect time period format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Incorrect time period format. Example: 04:10 - 05:10.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
